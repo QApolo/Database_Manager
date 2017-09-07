@@ -1,0 +1,2 @@
+nombre 3
+noBoleta 1

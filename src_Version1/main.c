@@ -72,8 +72,8 @@ void crearDB()
 	fclose(pf);
 
 	printf("Ingrese el nombre de la db\n");
-	cad=new_string();
-	int i,existe=0;
+	cad = new_string();
+	int i,existe = 0;
 	pf=fopen("DB/nombre_bases.txt","r");
 	for(i=0;i<cant;i++)
 	{	fscanf(pf,"%s",base_leida);
@@ -152,7 +152,7 @@ void usarDB(String sel)
 	}
 	do
 	{
-		printf("1)Crear tabla\n2)Modificar tabla\n3)Eliminar tabla\n");
+		printf("1)Crear tabla\n2)Modificar tabla\n3)Eliminar tabla\n4)Insertar\n5)salir");
 		scanf("%d",&op);
 
 		switch(op)
@@ -162,12 +162,65 @@ void usarDB(String sel)
 			break;
 
 			case 2:
+				modificarTabla(sel);
 			break;
 
 			case 3:
+				eliminarTabla(sel);
+			break;
+			case 4:
+				insertarTabla(dbsel);
 			break;
 		}
 	}while(op!=5);
+}
+void insertarTabla(String dbsel)
+{
+	String tbsel;
+	tbsel = new_string();
+	printf("Ingrese la tabla en la que se insertaran datos\n");
+	scanf("%s",tbsel); //verificar si existe tabla
+
+	FILE *pf;
+	pf = fopen(concatenar("DB/",concatenar(dbsel,concatenar("/",concatenar(tbsel,"campos.txt") ))),"r");
+
+	
+	String campo = new_string();
+	int tipo;
+
+	int dataInt;
+	String dataString = new_string();
+	float dataFloat;
+
+	while(fscanf(pf,"%s %d",campo,&tipo) != EOF)
+	{
+		printf("Inserte valor para campo <%s>\n",campo);
+		switch(tipo)
+		{
+			//1 int --- 2 float ... 3 Sring
+			case 1:
+				scanf("%d",&dataInt);
+			break;
+			case 2:
+				scanf("%f",&dataFloat);
+			break;
+			case 3:
+				scanf("%s",dataString);
+			break;
+		}
+
+	}
+	fclose(pf);
+
+
+}
+void modificarTabla(String dbsel)
+{
+
+}	
+void eliminarTabla(String dbsel)
+{
+	
 }
 
 void eliminarDB(String dbsel)
@@ -245,6 +298,7 @@ void crearTabla(String sel)
 		printf("1) int\n2)float\n3) string\n");
 		printf("Ingrese el nombre y tipo del campo %d\n",i+1 );
 		nom=new_string();
+		system(concatenar("mkdir ",nom));
 		scanf("%d",&t);
 		fprintf(pf, "%s %d\n",nom, t);
 	}

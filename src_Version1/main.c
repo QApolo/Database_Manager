@@ -3,7 +3,7 @@
 #include <string.h>
 
 //definimos String como tipo *char
-//typedef char* String;
+typedef char* String;
 //-----prototipos
 
 	//protipos generales
@@ -178,7 +178,9 @@ void eliminarDB(String dbsel)
 		return;
 	}
 	int cant=0,i,k=0;
-	String nbase=malloc(sizeof(char)*100),bases[100];
+	String nbase[100],bases[100];
+	for(int i = 0; i < 100; i++)
+		nbase[i] = malloc(sizeof(char)*100);
 	FILE *pf=fopen("DB/cant_db.txt","r");
 	fscanf(pf,"%d",&cant);
 	fclose(pf);
@@ -186,9 +188,9 @@ void eliminarDB(String dbsel)
 	pf=fopen("DB/nombre_bases.txt","r");
 	for(i=0;i<cant;i++)
 	{
-		fscanf(pf,"%s",nbase);
-		if(!cadenaIdentica(nbase,dbsel))
-			bases[k++]=nbase;
+		fscanf(pf,"%s",nbase[i]);
+		if(!cadenaIdentica(nbase[i],dbsel))
+			bases[k++]=nbase[i];
 	}
 	fclose(pf);
 	pf=fopen("DB/nombre_bases.txt","w");
@@ -201,8 +203,8 @@ void eliminarDB(String dbsel)
 	pf=fopen("DB/cant_db.txt","w");
 	fprintf(pf, "%d\n",k );
 	fclose(pf);
-	system(concatenar("rm -fr DB/",dbsel));
-	printf("%s\n",concatenar("rm -fr DB/",dbsel) );
+	system(concatenar("rm -r DB/",dbsel));
+	printf("%s\n",concatenar("rm -r DB/",dbsel) );
 	printf("---------La base de datos se ha eliminado satisfactoriamente-------\n");
 
 
